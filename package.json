@@ -1,13 +1,13 @@
 {
-  "name": "dict",
-  "version": "1.0.0",
+  "name": "dictinfo",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "anton feldmann (anton.feldmann@gmail.com)",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "dotenv": "^5.0.1",
     "sync-request": "^6.0.0"
