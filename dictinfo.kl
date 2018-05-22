@@ -29,16 +29,16 @@ BEGIN
 	OPEN FILE responseFile ('RW', 'RD:RESPONSE.HTM')
 	STATUS = IO_STATUS(responseFile)
 	IF (STATUS <> 0) THEN
-		WRITE responseFile ( '{"result":"failed", "program":"dictinfo", "reason":',STATUS,'}') 
+		WRITE responseFile ( '{"id": -1, "data": null , "reason":',STATUS,'}') 
 	ENDIF
 	
 	IF UNINIT(dict) OR (STR_LEN(dict) > 4) THEN
-		WRITE responseFile ( '{"result":"failed", "program":"dictinfo", "reason": -1}')
+		WRITE responseFile ( '{"id": -1, "data": null, "reason": -1}')
 	ELSE
 		WRITE ('dictname: ', dict, CR)
 	
 		IF UNINIT(dictno) THEN
-		   WRITE responseFile ( '{"result":"failed", "program":"dictinfo", "reason": -2}')
+		   WRITE responseFile ( '{"id": -1, "data": null, "reason": -2}')
 		ELSE
 			CNV_STR_INT(dictno, no)
 			WRITE ('elem no: ', dictno , CR)
@@ -46,12 +46,12 @@ BEGIN
 			READ_DICT(dict, no, dictelem, 1, dict_elem, STATUS)
       			IF STATUS <> 0 THEN
 			   WRITE ('read status: ', STATUS, CR)
-			   WRITE responseFile ( '{"result":"failed", "program":"dictinfo", "reason": ',STATUS,'}')
+			   WRITE responseFile ( '{"id": -1, "data": null, "reason": ',STATUS,'}')
       			ELSE
 				IF UNINIT(dictelem[1]) THEN
-    				   WRITE responseFile ( '{"result":"failed", "program":"dictinfo", "reason": -3}')
+    				   WRITE responseFile ( '{"id": -1, "data": null, "reason": -3}')
     				ELSE
-      				   WRITE responseFile ( '{ "id":', int2str(no) ,' ,"value":"',dictelem[1],'"}')	
+      				   WRITE responseFile ( '{ "id":', int2str(no) ,' ,"data":"',dictelem[1],'", "reason": 0 }')	
     				ENDIF
       			ENDIF
 		ENDIF

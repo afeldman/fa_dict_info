@@ -10,8 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^5.0.1",
-    "http": "0.0.0",
-    "request": "^2.87.0",
     "sync-request": "^6.0.0"
   }
 }

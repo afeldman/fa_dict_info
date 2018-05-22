@@ -7,7 +7,16 @@ for (var i = 0; true; i++){
     var dictentry = JSON.parse(res.getBody('utf8'));
 
     if (typeof dictentry.id !== 'undefined' ){
-	console.log(dictentry);
+	if (dictentry.id !== -1){
+	    console.log("id: " + directory.id);
+	    if (directory.data !== null){
+		console.log("data: " + dictentry.data);
+	    }else{
+		console.log("data is null");
+	    }
+	}else(
+	    console.log(dictentry.reason);
+	)
     }else{
 	break;
     }
