@@ -1,6 +1,6 @@
 # fa_dict_info
 
-**dict_info** works on fanuc robot kontrollers. Sometimes I have the problem, that I cannot access the ID of an dictionary element. So I did wrtie me a program to look the ids up for me.
+**dict_info** works on fanuc robot controllers. Sometimes I have the problem, that I do not know the IDs of an dictionary element. So I wrote me a program to look up the ids for me.
 
 ## Install
 
