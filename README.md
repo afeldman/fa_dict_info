@@ -4,7 +4,7 @@
 
 ## Install
 
-first use the ktrans program to create a .PC file from the dictinfo.kl file. The program creates a CGI style webservice. Some settings has to be done bevor the nodejs client can connect to the robot controller.
+The KAREL program creates a CGI style webservice. Some settings has to be done bevor the nodejs client can connect to the robot controller.
 
 1. create a .env file:
 ```
