@@ -1,0 +1,87 @@
+PROGRAM dictinfo
+
+%COMMENT = 'info on dict'
+%NOLOCKGROUP
+%NOPAUSE=ERROR+COMMAND+TPENABLE
+%NOBUSYLAMP
+%ENVIRONMENT UIF
+
+%INCLUDE klevccdf
+
+VAR
+
+	STATUS: INTEGER
+	responseFile: FILE
+
+	dict: STRING[4]
+	dictno: STRING[5]
+	dictelem: ARRAY[2] OF STRING[127]
+	no: INTEGER
+	dict_elem: INTEGER
+
+ROUTINE int2str(i : INTEGER) 	 : STRING	FROM dictinfo
+ROUTINE lstrip(s : STRING)       : STRING	FROM dictinfo
+
+BEGIN
+
+	WRITE (CHR(cc_clear_win))
+	
+	OPEN FILE responseFile ('RW', 'RD:RESPONSE.HTM')
+	STATUS = IO_STATUS(responseFile)
+	IF (STATUS <> 0) THEN
+		WRITE responseFile ( '{"result":"failed", "program":"dictinfo", "reason":',STATUS,'}') 
+	ENDIF
+	
+	IF UNINIT(dict) OR (STR_LEN(dict) > 4) THEN
+		WRITE responseFile ( '{"result":"failed", "program":"dictinfo", "reason": -1}')
+	ELSE
+		WRITE ('dictname: ', dict, CR)
+	
+		IF UNINIT(dictno) THEN
+		   WRITE responseFile ( '{"result":"failed", "program":"dictinfo", "reason": -2}')
+		ELSE
+			CNV_STR_INT(dictno, no)
+			WRITE ('elem no: ', dictno , CR)
+			
+			READ_DICT(dict, no, dictelem, 1, dict_elem, STATUS)
+      			IF STATUS <> 0 THEN
+			   WRITE ('read status: ', STATUS, CR)
+			   WRITE responseFile ( '{"result":"failed", "program":"dictinfo", "reason": ',STATUS,'}')
+      			ELSE
+				IF UNINIT(dictelem[1]) THEN
+    				   WRITE responseFile ( '{"result":"failed", "program":"dictinfo", "reason": -3}')
+    				ELSE
+      				   WRITE responseFile ( '{ "id":', int2str(no) ,' ,"value":"',dictelem[1],'"}')	
+    				ENDIF
+      			ENDIF
+		ENDIF
+     
+	ENDIF
+	
+			
+	CLOSE FILE responseFile	
+	
+END dictinfo
+
+ROUTINE lstrip
+VAR
+  i : INTEGER
+BEGIN
+    FOR i = 1 TO STR_LEN(s) DO
+      IF SUB_STR(s,i,1) <> ' ' THEN
+        RETURN(SUB_STR(s,i,STR_LEN(s)))
+      ENDIF
+    ENDFOR
+    RETURN(s)
+END lstrip
+
+ROUTINE int2str
+  VAR
+    s : STRING[16]
+  BEGIN
+    IF UNINIT(i) THEN
+      RETURN('null')
+    ENDIF
+    CNV_INT_STR(i, 0, 0, s)
+    RETURN(lstrip(s))
+END int2str
